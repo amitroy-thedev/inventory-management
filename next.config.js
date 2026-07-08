@@ -7,9 +7,6 @@ const nextConfig = {
   typescript: {
     // We already do tsc check in lint step
     ignoreBuildErrors: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
   }
 };
 

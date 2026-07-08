@@ -159,6 +159,9 @@ export async function initDatabase() {
 }
 
 export async function getDb() {
-  await initDatabase();
+  if (!initialized && typeof window === 'undefined') {
+    // Auto-initialize on server side when getDb is called
+    await initDatabase();
+  }
   return db;
 }

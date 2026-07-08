@@ -43,6 +43,9 @@ export default function App() {
   useEffect(() => {
     const loadInitialData = async () => {
       try {
+        // Initialize database first
+        await fetch('/api/init-db');
+        
         const [supRes, prodRes, ordRes, logRes] = await Promise.all([
           fetch('/api/suppliers').then(res => res.json()),
           fetch('/api/products').then(res => res.json()),

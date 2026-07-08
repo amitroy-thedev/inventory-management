@@ -1,8 +1,9 @@
 import express from 'express';
 import path from 'path';
+import os from 'os';
 import dotenv from 'dotenv';
 import { createClient } from '@libsql/client';
-import { createServer as createViteServer } from 'vite';
+import next from 'next';
 
 dotenv.config();
 
@@ -17,7 +18,7 @@ const TURSO_URL = process.env.TURSO_DATABASE_URL;
 const TURSO_TOKEN = process.env.TURSO_AUTH_TOKEN;
 
 const isRemote = !!(TURSO_URL && TURSO_URL.startsWith('libsql://'));
-const dbUrl = TURSO_URL || ('file:' + path.join(process.cwd(), 'local.db'));
+const dbUrl = TURSO_URL || ('file:' + (process.env.NODE_ENV === 'production' ? path.join(os.tmpdir(), 'local.db') : path.join(process.cwd(), 'local.db')));
 
 console.log(`[Database] Connecting to ${isRemote ? 'Turso Cloud Database' : 'Local SQLite database file'} (${dbUrl})`);
 
@@ -585,27 +586,24 @@ app.post('/api/run-query', async (req, res) => {
   }
 });
 
-// --- VITE MIDDLEWARE & STATIC ASSET SERVING ---
+// --- NEXT.JS SERVER INTEGRATION ---
 async function startServer() {
   // Initialize SQLite schema and seeds first
   await initDatabase();
 
-  if (process.env.NODE_ENV !== 'production') {
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: 'spa',
-    });
-    app.use(vite.middlewares);
-  } else {
-    const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
-  }
+  const dev = process.env.NODE_ENV !== 'production';
+  const nextApp = next({ dev });
+  const handle = nextApp.getRequestHandler();
+
+  await nextApp.prepare();
+
+  // Next.js page handling for any non-API routes
+  app.all('*', (req, res) => {
+    return handle(req, res);
+  });
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`[Server] Running on http://localhost:${PORT}`);
+    console.log(`[Server] Next.js Full-Stack Server running on http://localhost:${PORT}`);
   });
 }
 

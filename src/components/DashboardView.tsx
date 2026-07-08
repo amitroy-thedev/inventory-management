@@ -277,24 +277,7 @@ export default function DashboardView({
 
       </div>
 
-      {/* SQL Trace Banner for Students */}
-      <div className="bg-slate-900 text-slate-100 p-5 rounded-2xl border border-slate-800 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 bg-emerald-400 rounded-full animate-ping"></span>
-            <h4 className="text-sm font-semibold tracking-wide uppercase text-slate-300">SQL Log Console Active</h4>
-          </div>
-          <p className="text-xs text-slate-400">
-            Every screen action translates instantly to a relational SQL equivalent. Click the SQL Console to test queries, look up schemas, or trace logs.
-          </p>
-        </div>
-        <button
-          onClick={() => setActiveTab('sql-console')}
-          className="px-4 py-2 bg-slate-800 hover:bg-slate-750 border border-slate-700 text-xs font-semibold text-blue-400 rounded-xl transition-all shadow-sm flex items-center gap-1.5 cursor-pointer"
-        >
-          Open SQL Console <ArrowRight className="w-3.5 h-3.5" />
-        </button>
-      </div>
+
     </div>
   );
 }

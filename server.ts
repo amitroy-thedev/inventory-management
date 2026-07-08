@@ -17,7 +17,7 @@ const TURSO_URL = process.env.TURSO_DATABASE_URL;
 const TURSO_TOKEN = process.env.TURSO_AUTH_TOKEN;
 
 const isRemote = !!(TURSO_URL && TURSO_URL.startsWith('libsql://'));
-const dbUrl = TURSO_URL || 'file:local.db';
+const dbUrl = TURSO_URL || ('file:' + path.join(process.cwd(), 'local.db'));
 
 console.log(`[Database] Connecting to ${isRemote ? 'Turso Cloud Database' : 'Local SQLite database file'} (${dbUrl})`);
 

@@ -1,0 +1,6 @@
+{
+  "name": "Inventory Control Management System",
+  "description": "A minimal, modern, and responsive Inventory Control DBMS project featuring simulated SQL query tracing, CRUD operations, supplier management, and interactive reporting.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
